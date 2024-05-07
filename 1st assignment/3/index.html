@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>React Fragment Wrapper</title>
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <style>
+    .main {
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    function MyComponent() {
+      const handleClick = () => {
+        alert("Hello");
+      };
+
+      return (
+        <React.Fragment>
+          <p>React is a javascript library</p>
+
+          <div className="main">
+            <p>Click the below button to alert 'Hello'</p>
+            <button onClick={handleClick}>Alert Hello</button>
+          </div>
+        </React.Fragment>
+      );
+    }
+
+    ReactDOM.render(<MyComponent />, document.getElementById("root"));
+  </script>
+</body>
+</html>
