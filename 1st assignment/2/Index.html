@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JSX Practice</title>
+  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    // Simple JSX Element
+    let simpleElement = <p>Seize the day</p>;
+    
+    // Render simpleElement inside the div with id "root"
+    ReactDOM.render(simpleElement, document.getElementById('root'));
+
+    // Dynamic Content in JSX
+   let dynamicText = "Seize the day";
+   let dynamicElement = <p>{dynamicText}</p>;
+   
+    // Render dynamicElement inside the div with id "root"
+    ReactDOM.render(dynamicElement, document.getElementById('root'));
+
+    // Conditional Rendering in JSX
+   let showParagraphOne = true; // Boolean variable
+   let conditionalElement = showParagraphOne 
+      ? <p>This is the first paragraph. Seize the day!</p>
+      : <p>This is the second paragraph. Make the most of it!</p>;
+
+    // Render conditionalElement inside the div with id "root"
+    ReactDOM.render(conditionalElement, document.getElementById('root'));
+  </script>
+</body>
+</html>
