@@ -1,0 +1,21 @@
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+  
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px; 
+    padding: 20px;
+  }
+  
+  .gallery-image {
+    width: 10%;
+    height: auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  

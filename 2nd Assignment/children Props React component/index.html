@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery Component</title>
+  <link rel="stylesheet" href="styles.css"> 
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div> 
+  
+  <script type="text/babel">
+
+    function Gallery({ children }) {
+      return <div className="gallery">{children}</div>;
+    }
+    
+   
+    function Image({ src, alt }) {
+      return <img src={src} alt={alt} />;
+    }
+
+    const App = () => {
+      return (
+        <div>
+          <h1>My Photo Gallery</h1>
+          <Gallery>
+            <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk78XDvGdqUfhTP_8wb_XBupzKcwD7dnxzGCFurH7rIg&s" alt="Sample 1" />
+            <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk78XDvGdqUfhTP_8wb_XBupzKcwD7dnxzGCFurH7rIg&s" alt="Sample 2" />
+            <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk78XDvGdqUfhTP_8wb_XBupzKcwD7dnxzGCFurH7rIg&s" alt="Sample 3" />
+            <Image src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk78XDvGdqUfhTP_8wb_XBupzKcwD7dnxzGCFurH7rIg&s" alt="Sample 4" />
+          </Gallery>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App Gallery/>, document.getElementById("root"));
+  </script>
+</body>
+</html>
