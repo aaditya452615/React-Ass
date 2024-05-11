@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo List</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const TodoList = () => {
+      const [todos, setTodos] = React.useState([]);
+      const [filter, setFilter] = React.useState('all');
+
+      const handleAddTodo = (todoText) => {
+        const newTodo = {
+          id: Date.now(),
+          text: todoText,
+          completed: false
+        };
+        setTodos([...todos, newTodo]);
+      };
+
+      const handleToggleCompletion = (id) => {
+        setTodos(todos.map(todo => 
+          todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        ));
+      };
+
+      const handleDeleteTodo = (id) => {
+        setTodos(todos.filter(todo => todo.id !== id));
+      };
+
+      const filteredTodos = todos.filter(todo => {
+        if (filter === 'all') return true;
+        if (filter === 'active') return !todo.completed;
+        if (filter === 'completed') return todo.completed;
+      });
+
+      return (
+        <div>
+          <input type="text" id="todoInput" />
+          <button onClick={() => handleAddTodo(document.getElementById("todoInput").value)}>Add Todo</button>
+          <div>
+            <button onClick={() => setFilter('all')}>All</button>
+            <button onClick={() => setFilter('active')}>Active</button>
+            <button onClick={() => setFilter('completed')}>Completed</button>
+          </div>
+          <ul>
+            {filteredTodos.map(todo => (
+              <li key={todo.id} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}>
+                <input 
+                  type="checkbox" 
+                  checked={todo.completed} 
+                  onChange={() => handleToggleCompletion(todo.id)}
+                />
+                {todo.text}
+                <button onClick={() => handleDeleteTodo(todo.id)}>Delete</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<TodoList />, document.getElementById("root"));
+  </script>
+</body>
+</html>
