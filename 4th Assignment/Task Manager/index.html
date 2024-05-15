@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Task Manager</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="text/babel">
+    const TaskManager = () => {
+      const [tasks, setTasks] = React.useState([]);
+      const [newTask, setNewTask] = React.useState({ title: "", isCompleted: false, assignee: "" });
+
+      const fetchAllTasks = async () => {
+        try {
+          const response = await axios.get("http://localhost:3000/todos");
+          setTasks(response.data);
+        } catch (error) {
+          console.error("Error fetching tasks:", error);
+        }
+      };
+
+      React.useEffect(() => {
+        fetchAllTasks();
+      }, []);
+
+      const handleAddTask = async () => {
+        try {
+          await axios.post("http://localhost:3000/todos", newTask);
+          fetchAllTasks();
+          setNewTask({ title: "", isCompleted: false, assignee: "" });
+        } catch (error) {
+          console.error("Error adding task:", error);
+        }
+      };
+
+      const handleUpdateTask = async (id, updatedTask) => {
+        try {
+          await axios.put(`http://localhost:3000/todos/${id}`, updatedTask);
+          fetchAllTasks();
+        } catch (error) {
+          console.error("Error updating task:", error);
+        }
+      };
+
+      const handleDeleteTask = async (id) => {
+        try {
+          await axios.delete(`http://localhost:3000/todos/${id}`);
+          fetchAllTasks();
+        } catch (error) {
+          console.error("Error deleting task:", error);
+        }
+      };
+
+      const handleShowIncompleteTasks = async () => {
+        try {
+          const response = await axios.get("http://localhost:3000/todos?isCompleted=false");
+          setTasks(response.data);
+        } catch (error) {
+          console.error("Error fetching incomplete tasks:", error);
+        }
+      };
+
+      const handleShowAllTasks = async () => {
+        fetchAllTasks();
+      };
+
+      return (
+        <div>
+          <h1>Advanced Task Manager</h1>
+          <form onSubmit={(e) => { e.preventDefault(); handleAddTask(); }}>
+            <input type="text" value={newTask.title} onChange={(e) => setNewTask({ ...newTask, title: e.target.value })} placeholder="Title" />
+            <input type="text" value={newTask.assignee} onChange={(e) => setNewTask({ ...newTask, assignee: e.target.value })} placeholder="Assignee" />
+            <button type="submit">Add Task</button>
+          </form>
+          <button onClick={handleShowIncompleteTasks}>Show Incomplete Tasks</button>
+          <button onClick={handleShowAllTasks}>Show All Tasks</button>
+          <ul>
+            {tasks.map((task) => (
+              <li key={task.id}>
+                <input type="checkbox" checked={task.isCompleted} onChange={(e) => handleUpdateTask(task.id, { ...task, isCompleted: e.target.checked })} />
+                <span>{task.title}</span>
+                <span>({task.assignee})</span>
+                <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<TaskManager />, document.getElementById("root"));
+  </script>
+</body>
+</html>

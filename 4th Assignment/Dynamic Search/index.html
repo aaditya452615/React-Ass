@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Profiles</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const users = [
+      { id: 1, name: "John Doe", age: 30 },
+      { id: 2, name: "Jane Smith", age: 25 },
+      { id: 3, name: "Alice Johnson", age: 35 },
+      { id: 4, name: "Bob Brown", age: 40 },
+      { id: 5, name: "Eva Davis", age: 28 }
+    ];
+
+    const UserProfile = ({ user }) => (
+      <div>
+        <h2>{user.name}</h2>
+        <p>Age: {user.age}</p>
+      </div>
+    );
+
+    const App = () => {
+      const [searchTerm, setSearchTerm] = useState("");
+      const [filteredUsers, setFilteredUsers] = useState(users);
+
+      useEffect(() => {
+        const filtered = users.filter(user =>
+          user.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredUsers(filtered);
+      }, [searchTerm]);
+
+      return (
+        <div>
+          <h1>User Profiles</h1>
+          <input
+            type="text"
+            placeholder="Search by name"
+            value={searchTerm}
+            onChange={e => setSearchTerm(e.target.value)}
+          />
+          {filteredUsers.map(user => (
+            <UserProfile key={user.id} user={user} />
+          ))}
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</body>
+</html>

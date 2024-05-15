@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .todo-item {
+      margin-bottom: 10px;
+    }
+    .completed {
+      text-decoration: line-through;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const TodoList = () => {
+      const [todos, setTodos] = React.useState([]);
+      const [newTodo, setNewTodo] = React.useState("");
+
+      const handleChange = (event) => {
+        setNewTodo(event.target.value);
+      };
+
+      const handleSubmit = (event) => {
+        event.preventDefault();
+        if (newTodo.trim() !== "") {
+          setTodos([...todos, { text: newTodo, completed: false }]);
+          setNewTodo("");
+        }
+      };
+
+      const handleDelete = (index) => {
+        const updatedTodos = todos.filter((todo, i) => i !== index);
+        setTodos(updatedTodos);
+      };
+
+      const handleToggle = (index) => {
+        const updatedTodos = [...todos];
+        updatedTodos[index].completed = !updatedTodos[index].completed;
+        setTodos(updatedTodos);
+      };
+
+      return (
+        <div>
+          <h1>To-Do List</h1>
+          <form onSubmit={handleSubmit}>
+            <input type="text" value={newTodo} onChange={handleChange} />
+            <button type="submit">Add</button>
+          </form>
+          <ul>
+            {todos.map((todo, index) => (
+              <li key={index} className={`todo-item ${todo.completed ? "completed" : ""}`}>
+                <input type="checkbox" checked={todo.completed} onChange={() => handleToggle(index)} />
+                <span>{todo.text}</span>
+                <button onClick={() => handleDelete(index)}>Delete</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<TodoList />, document.getElementById("root"));
+  </script>
+</body>
+</html>
